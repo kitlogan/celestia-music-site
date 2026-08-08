@@ -203,7 +203,9 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, audio:focus-visible {
 }
 .hero__bg {
   position: absolute; inset: 0; z-index: -2;
-  background-image: url("assets/img/harp-thanksgiving.jpg");
+  /* Enhanced 2560px version (Lanczos + sharpening) for crisper full-bleed on
+     retina — swap for a genuine high-res church/conservatory shot when supplied. */
+  background-image: url("assets/img/harp-thanksgiving-hero.jpg");
   background-size: cover; background-position: center 30%;
   transform: scale(1.05);
 }

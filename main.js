@@ -181,46 +181,84 @@
   }
 
   /* -------------------------------------------------------
-     5. INSTAGRAM grid
+     5. INSTAGRAM — live grid
      ---------------------------------------------------------
-     Lightweight & fast — no third-party embed script.
-     To show real posts: drop square images into /assets/img/ig/
-     and fill IG_POSTS with { img: "assets/img/ig/xxx.jpg",
-     link: "https://www.instagram.com/p/…/", alt: "…" }.
-     Leave IG_POSTS empty to show placeholder tiles linking to
-     the profile.
+     The grid renders LIVE from assets/ig.json when available, so
+     the section refreshes itself as new posts appear. That file is
+     produced/refreshed by the GitHub Action in
+     .github/workflows/instagram-feed.yml (see README).
+
+     Supported JSON shapes (either works):
+       • Instagram Graph API:  { "data": [ { media_url, thumbnail_url,
+         permalink, caption, media_type }, … ] }
+       • Simple:               [ { img, link, alt }, … ]
+
+     If ig.json is missing/empty it falls back to IG_POSTS (a manual
+     list you can hard-code), and finally to placeholder tiles that
+     link to the profile — so the section always looks intentional.
+
+     Prefer a hosted widget (Elfsight / LightWidget / Behold)? Replace
+     the #ig-grid element in index.html with the widget embed instead.
      ------------------------------------------------------- */
   var IG_PROFILE = "https://www.instagram.com/celestia__music/";
-  var IG_POSTS = [
-    // { img: "assets/img/ig/post-1.jpg", link: "https://www.instagram.com/p/xxxx/", alt: "Choir at a church" },
-  ];
+  var IG_FEED_URL = "assets/ig.json";
   var IG_TILE_COUNT = 6;
+  // Optional manual fallback: [{ img:"assets/img/ig/post-1.jpg", link:"…", alt:"…" }]
+  var IG_POSTS = [];
 
   var IG_GLYPH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
 
-  var igGrid = document.getElementById("ig-grid");
-  if (igGrid) {
-    for (var i = 0; i < IG_TILE_COUNT; i++) {
-      var post = IG_POSTS[i];
-      var a = document.createElement("a");
-      a.className = "ig-tile";
-      a.target = "_blank";
-      a.rel = "noopener";
+  function igNormalise(raw) {
+    // Accept Graph-API objects or simple {img,link,alt} objects.
+    var list = Array.isArray(raw) ? raw : (raw && (raw.data || raw.posts)) || [];
+    return list.map(function (p) {
+      var img = p.img || p.media_url || p.thumbnail_url || "";
+      // Videos expose media_url as an mp4; prefer the thumbnail for a grid tile.
+      if (p.media_type === "VIDEO" && p.thumbnail_url) img = p.thumbnail_url;
+      var caption = p.alt || p.caption || "Celestia Music on Instagram";
+      return { img: img, link: p.link || p.permalink || IG_PROFILE, alt: caption.slice(0, 120) };
+    }).filter(function (p) { return p.img; });
+  }
 
-      if (post && post.img) {
-        a.href = post.link || IG_PROFILE;
-        a.innerHTML =
-          '<img src="' + post.img + '" alt="' + (post.alt || "Celestia Music on Instagram") + '" loading="lazy" />' +
-          '<span class="ig-tile__overlay">' + IG_GLYPH + '</span>';
-      } else {
-        a.href = IG_PROFILE;
-        a.setAttribute("aria-label", "Celestia Music on Instagram (placeholder)");
-        a.innerHTML =
-          '<span class="ig-tile__ph">' + IG_GLYPH + '<span>@celestia__music</span></span>';
-      }
-      igGrid.appendChild(a);
+  function igRenderTile(post) {
+    var a = document.createElement("a");
+    a.className = "ig-tile";
+    a.target = "_blank";
+    a.rel = "noopener";
+    if (post && post.img) {
+      a.href = post.link || IG_PROFILE;
+      a.innerHTML =
+        '<img src="' + post.img + '" alt="' + post.alt.replace(/"/g, "&quot;") + '" loading="lazy" />' +
+        '<span class="ig-tile__overlay">' + IG_GLYPH + '</span>';
+    } else {
+      a.href = IG_PROFILE;
+      a.setAttribute("aria-label", "Celestia Music on Instagram");
+      a.innerHTML = '<span class="ig-tile__ph">' + IG_GLYPH + '<span>@celestia__music</span></span>';
+    }
+    return a;
+  }
+
+  function igPaint(posts) {
+    var grid = document.getElementById("ig-grid");
+    if (!grid) return;
+    grid.innerHTML = "";
+    for (var i = 0; i < IG_TILE_COUNT; i++) {
+      grid.appendChild(igRenderTile(posts[i]));
     }
   }
+
+  (function initInstagram() {
+    if (!document.getElementById("ig-grid")) return;
+    igPaint(IG_POSTS);            // immediate fallback so nothing flashes empty
+    if (!("fetch" in window)) return;
+    fetch(IG_FEED_URL, { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        var posts = igNormalise(data);
+        if (posts.length) igPaint(posts);
+      })
+      .catch(function () { /* keep fallback tiles */ });
+  })();
 
   /* -------------------------------------------------------
      6. Footer year

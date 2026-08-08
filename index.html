@@ -210,10 +210,16 @@
           <a class="ig-handle" href="https://www.instagram.com/celestia__music/" target="_blank" rel="noopener">@celestia__music</a>
         </header>
 
-        <!-- Lightweight, fast Instagram grid (no heavy third-party embed).
-             Replace the placeholder tiles with real post images: drop images into
-             /assets/img/ig/ and update the IG_POSTS array in main.js. -->
-        <div class="ig-grid" id="ig-grid"></div>
+        <!-- LIVE INSTAGRAM FEED
+             This grid auto-populates from assets/ig.json, which the GitHub Action
+             in .github/workflows/instagram-feed.yml refreshes daily from the
+             Instagram account. Until that's configured it shows placeholder tiles
+             that link to the profile (so the section always looks intentional).
+
+             PREFER A HOSTED WIDGET INSTEAD? (Elfsight — as the old site used —
+             or LightWidget / Behold): delete the #ig-grid <div> below and paste
+             the widget's embed snippet here. See README → "Instagram (live feed)". -->
+        <div class="ig-grid" id="ig-grid" data-ig-grid></div>
 
         <div class="section-cta reveal">
           <a class="btn btn--ghost" href="https://www.instagram.com/celestia__music/" target="_blank" rel="noopener">See more on Instagram</a>

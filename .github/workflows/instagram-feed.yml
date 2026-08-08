@@ -1,0 +1,50 @@
+name: Refresh Instagram feed
+
+# Keeps assets/ig.json up to date from the Instagram account so the website's
+# Instagram section stays fresh. Safe to leave in place before it's configured:
+# without the IG_TOKEN secret the job just no-ops.
+#
+# To enable: add repo secrets IG_TOKEN (and optionally IG_USER_ID) under
+# Settings → Secrets and variables → Actions. See README → "Instagram (live feed)".
+
+on:
+  schedule:
+    - cron: "0 6 * * *"      # daily at 06:00 UTC
+  workflow_dispatch: {}       # ...and a manual "Run workflow" button
+
+# Allow the job to commit the refreshed assets/ig.json back to the repo.
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-feed
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch latest posts
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_LIMIT: "12"
+        run: node scripts/fetch-instagram.mjs
+
+      - name: Commit if the feed changed
+        run: |
+          if [ -n "$(git status --porcelain assets/ig.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add assets/ig.json
+            git commit -m "Refresh Instagram feed"
+            git push
+          else
+            echo "No changes to the Instagram feed."
+          fi

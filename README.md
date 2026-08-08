@@ -40,10 +40,29 @@ python3 -m http.server 8080
   2. Open `main.js`, find the `TRACKS` array near the top of section 4.
   3. For each track set a real `title`, point `src` at your file, and change `placeholder: true` → `placeholder: false`.
   4. Add or remove lines to change how many players show.
-- **Instagram grid:** by default it shows tasteful placeholder tiles that link to the profile. To show real posts, drop square images into `assets/img/ig/` and fill in the `IG_POSTS` array in `main.js` (section 5).
+- **Instagram grid:** shows a live feed when configured, otherwise tasteful placeholder tiles that link to the profile. See **"Instagram (live feed)"** below to make it live.
 - **Hero background:** currently `assets/img/harp-thanksgiving.jpg`. To swap it, replace that file (or change the URL in `styles.css`, selector `.hero__bg`). See "Assets still needed" below.
 
 ---
+
+## Instagram (live feed)
+
+You wanted the Instagram section to **pull live from the account so the site stays fresh**. On a static site there are two good ways to do that — pick one:
+
+### Option A — a hosted widget (easiest, what the old site did)
+A widget service connects to your Instagram once and gives you a small embed snippet that shows a live, auto-refreshing feed.
+- **Elfsight** — this is what the *current* site already uses, so you may still have the account. Free tier has a monthly view limit + a small badge.
+- **LightWidget** or **Behold** — free, lighter, cleaner; good modern alternatives.
+- **To wire it in:** sign in at the provider, connect **@celestia__music**, copy the embed code, then in `index.html` delete the `<div id="ig-grid">…</div>` line in the Instagram section and paste the embed in its place. Send me the snippet and I'll do it for you.
+- **Note:** most widgets (and Option B) need the Instagram account to be a **Business or Creator** account (free to switch in the Instagram app: Settings → Account type). Personal accounts are more limited.
+
+### Option B — self-owned, no third-party script (free, fully in your repo)
+A scheduled **GitHub Action** (`.github/workflows/instagram-feed.yml`) fetches your latest posts once a day using Instagram's official API and writes `assets/ig.json`; the page reads that file and renders the grid. No third-party script runs on the page, so it stays fast and private.
+- **One-time setup:** create a Meta developer app, connect the Instagram (Business/Creator) account, generate a **long-lived access token**, then add it as a repo secret named **`IG_TOKEN`** (Settings → Secrets and variables → Actions). Optionally add `IG_USER_ID`.
+- The Action then runs daily (and on demand). Until `IG_TOKEN` is set it simply does nothing, so it's safe to leave in place.
+- **Trade-off:** the long-lived token expires roughly every 60 days and needs refreshing — more control, a little more upkeep. Happy to walk you through the Meta setup.
+
+Either way, until it's configured the section shows placeholder tiles that link straight to the profile, so it always looks intentional. **My recommendation:** if you want it live with the least fuss, Option A with LightWidget or your existing Elfsight; if you'd rather own it end-to-end with no third-party script, Option B.
 
 ## Deploy to GitHub Pages
 
@@ -107,9 +126,9 @@ Once `https://celestiamusic.com` loads this site correctly, you can cancel the W
 
 These are clearly marked in the build and ready to drop in:
 
-1. **High-res hero background** — the hero currently reuses `harp-thanksgiving.jpg` (a real photo, but a portrait shot used as a stand-in). A **wide, high-resolution church / conservatory image** would look better full-screen. Replace the file or update `.hero__bg` in `styles.css`.
+1. **High-res hero background** — the hero uses `harp-thanksgiving-hero.jpg`, a sharpened 2560px enhancement of the original photo (the original is kept as `harp-thanksgiving.jpg`). It looks good, but a genuinely **wide, high-resolution church / conservatory image** would be even better full-screen. Send one and I'll swap it in (or update `.hero__bg` in `styles.css`).
 2. **5–6 audio recordings** → `assets/audio/` (see "Editing" above). Prefer ones that start quickly and show range (a lively arrangement, the shortened Amen, *Stranger on the Shore*, etc.). Confirm they're cleared to publish.
-3. **Instagram** — optional real post grid (images + post links), otherwise the placeholder tiles link straight to [@celestia__music](https://www.instagram.com/celestia__music/).
+3. **Instagram (live feed)** — pick Option A or B in the "Instagram (live feed)" section above and send me the embed snippet, or the `IG_TOKEN`. The account likely needs to be a **Business/Creator** account. Until then, placeholder tiles link to [@celestia__music](https://www.instagram.com/celestia__music/).
 4. **Toby Zeal testimonial** — the real quote to replace the placeholder card.
 
 ---
