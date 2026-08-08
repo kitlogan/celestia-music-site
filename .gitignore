@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Internal planning docs — kept locally, NOT published to the (public) Pages repo.
+# The PRD in particular contains internal pricing notes the site deliberately omits.
+# Delete these lines if you DO want them tracked in the repo.
+celestia-music-PRD.md
+ASSETS-MANIFEST.md
+claude-code-prompt-celestia.md
