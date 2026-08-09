@@ -203,10 +203,11 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, audio:focus-visible {
 }
 .hero__bg {
   position: absolute; inset: 0; z-index: -2;
-  /* Enhanced 2560px version (Lanczos + sharpening) for crisper full-bleed on
-     retina — swap for a genuine high-res church/conservatory shot when supplied. */
-  background-image: url("assets/img/harp-thanksgiving-hero.jpg");
-  background-size: cover; background-position: center 30%;
+  /* Real church-interior shot from the current site (3024×4032). Portrait, so
+     on wide screens `cover` shows a horizontal band — position tuned onto the
+     singers + ceiling. Mobile (portrait) shows more of the full scene. */
+  background-image: url("assets/img/church-choir-hero.jpg");
+  background-size: cover; background-position: center 42%;
   transform: scale(1.05);
 }
 .hero__scrim {
