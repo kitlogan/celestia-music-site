@@ -311,19 +311,18 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, audio:focus-visible {
      photos never balloon on wide screens — fully fluid below that. */
   width: min(var(--wrap), calc(100% - 2 * var(--gutter)));
   margin: 0 auto clamp(1.25rem, 3vw, 2rem);
-  /* Photo column is smaller than the text column so the image sits ~80% of a
-     half-width and the text (incl. the large event label) gets more room. */
-  display: grid; grid-template-columns: 0.7fr 1fr; align-items: stretch;
+  display: grid; grid-template-columns: 1fr 1fr; align-items: stretch;
   gap: 0;
   background: var(--ink); color: var(--cream-text);
   border-radius: var(--radius); overflow: hidden;
   box-shadow: var(--shadow);
 }
-.service--reverse { grid-template-columns: 1fr 0.7fr; }
 .service--reverse .service__media { order: 2; }
 /* Match the current site: the photo FILLS a rounded frame (cover) and sits on
    the dark card — substantial and square, not a letterboxed / shortened slice. */
-.service__media { min-width: 0; display: grid; place-items: center; background: #100e0b; padding: clamp(0.9rem, 2vw, 1.5rem); }
+/* Card stays a full half-width; the photo is inset with generous, even padding
+   so it sits ~80% within the frame (per feedback). */
+.service__media { min-width: 0; display: grid; place-items: center; background: #100e0b; padding: clamp(1.5rem, 6vw, 4.75rem); }
 .service__media img {
   width: 100%; aspect-ratio: 1 / 1; height: auto; object-fit: cover; object-position: center;
   border-radius: 16px; display: block;
