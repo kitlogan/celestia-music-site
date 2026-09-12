@@ -142,7 +142,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, audio:focus-visible {
   width: min(var(--wrap), 100%); margin-inline: auto; padding-inline: var(--gutter);
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
 }
-.nav__logo { height: 34px; width: auto; filter: brightness(0) invert(1); transition: filter 0.35s var(--ease); }
+.nav__logo { height: 50px; width: auto; filter: brightness(0) invert(1); transition: filter 0.35s var(--ease); }
 .nav__brand { display: inline-flex; align-items: center; }
 
 .nav__menu { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2rem); }
@@ -211,9 +211,11 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, audio:focus-visible {
 }
 .hero__scrim {
   position: absolute; inset: 0; z-index: -1;
+  /* Lighter than before so the florals show through in the middle; darker at the
+     top (for nav legibility) and bottom, with a soft halo behind the headline. */
   background:
-    linear-gradient(180deg, rgba(12,10,8,0.55) 0%, rgba(12,10,8,0.35) 35%, rgba(12,10,8,0.75) 100%),
-    radial-gradient(120% 90% at 50% 20%, rgba(12,10,8,0.15), rgba(12,10,8,0.8));
+    linear-gradient(180deg, rgba(12,10,8,0.52) 0%, rgba(12,10,8,0.22) 20%, rgba(12,10,8,0.14) 50%, rgba(12,10,8,0.5) 100%),
+    radial-gradient(85% 55% at 50% 46%, rgba(12,10,8,0.3), rgba(12,10,8,0) 72%);
 }
 .hero__content {
   width: min(var(--wrap), 100%); margin-inline: auto; padding-inline: var(--gutter);
@@ -224,19 +226,16 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, audio:focus-visible {
   font-size: clamp(2.2rem, 1.4rem + 3.2vw, 3.95rem);
   max-width: 20ch; margin-inline: auto;
   text-wrap: balance;
-}
-.hero__strap {
-  font-family: var(--serif); font-style: italic;
-  font-size: clamp(1.1rem, 1rem + 0.7vw, 1.4rem);
-  color: #eae3d4; margin: 1rem auto 1.7rem; max-width: 40ch;
+  text-shadow: 0 2px 28px rgba(12,10,8,0.55), 0 1px 4px rgba(12,10,8,0.4);
 }
 .hero__cta { }
 .hero__quote {
-  margin: 1.5rem auto 0; max-width: 32rem;
+  margin: 1.6rem auto 2.2rem; max-width: 32rem;
+  text-shadow: 0 2px 20px rgba(12,10,8,0.5);
 }
 .hero__quote blockquote {
-  font-family: var(--serif); font-style: italic; font-size: clamp(1.05rem, 1rem + 0.5vw, 1.35rem);
-  margin: 0; color: #f1ead9;
+  font-family: var(--serif); font-style: italic; font-size: clamp(1.15rem, 1rem + 0.7vw, 1.55rem);
+  margin: 0; color: #f5efe2;
 }
 .hero__quote figcaption { margin-top: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.72rem; color: var(--gold-soft); }
 
@@ -485,8 +484,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, audio:focus-visible {
 .footer { background: #0e0c09; color: var(--muted-dark); padding-block: 3rem; }
 .footer__inner { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; text-align: center; }
 .footer__brand { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
-.footer__logo { height: 56px; width: auto; opacity: 0.9; filter: brightness(0) invert(1); }
-.footer__name { font-family: var(--serif); font-style: italic; color: var(--cream-text); margin: 0; letter-spacing: 0.05em; }
+.footer__logo { height: 92px; width: auto; opacity: 0.92; filter: brightness(0) invert(1); }
 .footer__links { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
 .footer__links a { color: var(--muted-dark); text-decoration: none; transition: color 0.25s var(--ease); }
 .footer__links a:hover { color: var(--gold-soft); }
