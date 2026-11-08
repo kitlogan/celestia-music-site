@@ -135,6 +135,6 @@ These are clearly marked in the build and ready to drop in:
 
 ## Notes
 
-- **No pricing and no contact form anywhere** — deliberate. All "Get in touch" buttons open a pre-filled email to `joya@celestiamusic.com`.
+- **No pricing and no contact form anywhere** — deliberate. All "Get in touch" buttons open a new email (with a subject line, but a blank message) to `joya@celestiamusic.com`.
 - Copy is migrated **verbatim** from the old site. A copy refresh is a planned fast-follow (Phase 2), along with a feature video (a reserved slot already exists in the "Watch" section).
 - Fonts load from Google Fonts with a system-font fallback, so the site still renders if fonts are blocked.
