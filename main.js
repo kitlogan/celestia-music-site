@@ -202,7 +202,7 @@
      ------------------------------------------------------- */
   var IG_PROFILE = "https://www.instagram.com/celestia__music/";
   var IG_FEED_URL = "assets/ig.json";
-  var IG_TILE_COUNT = 6;
+  var IG_TILE_COUNT = 9;
   // Optional manual fallback: [{ img:"assets/img/ig/post-1.jpg", link:"…", alt:"…" }]
   var IG_POSTS = [];
 

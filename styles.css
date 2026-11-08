@@ -415,8 +415,8 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, audio:focus-visible {
 .ig-handle:hover { color: var(--gold); }
 
 .ig-grid {
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem;
-  margin-top: 1rem;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
+  max-width: 54rem; margin: 1rem auto 0;
 }
 .ig-tile {
   position: relative; aspect-ratio: 1/1; border-radius: var(--radius); overflow: hidden;
@@ -440,8 +440,7 @@ a:focus-visible, button:focus-visible, .btn:focus-visible, audio:focus-visible {
 
 .section-cta { text-align: center; margin-top: 2.2rem; }
 
-@media (max-width: 900px) { .ig-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 480px) { .ig-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .ig-grid { gap: 0.4rem; } .ig-tile__ph span { display: none; } }
 
 /* =========================================================
    TESTIMONIALS
